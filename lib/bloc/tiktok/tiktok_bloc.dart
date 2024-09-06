@@ -27,7 +27,7 @@ class TiktokBloc extends Bloc<TiktokEvent, TiktokState> {
           );
         } catch (e) {
           emit(
-            TiktokError(
+            const TiktokError(
               'Link salah, silahkan cek kembali!',
             ),
           );

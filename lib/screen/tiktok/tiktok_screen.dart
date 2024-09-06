@@ -10,19 +10,19 @@ class TiktokScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     TextEditingController linkTiktok = TextEditingController();
 
-    void _showErrorDialog(BuildContext context, String message) {
+    void showErrorDialog(BuildContext context, String message) {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
-          title: Text('Error'),
+          title: const Text('Terjadi Kesalahan'),
           content: Text(message),
-          actions: <Widget>[
-            TextButton(
-              child: Text('OK'),
+          actions: [
+            ElevatedButton(
               onPressed: () {
-                Navigator.of(ctx).pop();
+                Navigator.pop(context);
               },
-            ),
+              child: const Text('OK'),
+            )
           ],
         ),
       );
@@ -48,7 +48,7 @@ class TiktokScreen extends StatelessWidget {
             children: [
               TextField(
                 controller: linkTiktok,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Salin Link',
                   border: OutlineInputBorder(),
                   contentPadding: EdgeInsets.symmetric(
@@ -56,18 +56,20 @@ class TiktokScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               BlocConsumer<TiktokBloc, TiktokState>(
                 listener: (context, state) {
                   if (state is TiktokError) {
-                    _showErrorDialog(context, 'Link tidak ditemukan');
+                    showErrorDialog(context, state.error);
                   } else if (state is TiktokLoaded) {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TiktokDetailScreen(),
+                        builder: (context) => TiktokDetailScreen(
+                          tiktok: state.tiktok,
+                        ),
                       ),
                     );
                   }
@@ -86,7 +88,7 @@ class TiktokScreen extends StatelessWidget {
                       onPressed: () {
                         if (linkTiktok.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               duration: Duration(
                                 milliseconds: 500,
                               ),
@@ -103,7 +105,7 @@ class TiktokScreen extends StatelessWidget {
                       },
                       child: Text(
                         state is TiktokLoading ? 'Loading...' : 'Download',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
                         ),
