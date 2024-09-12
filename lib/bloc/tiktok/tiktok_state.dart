@@ -17,6 +17,26 @@ class TiktokLoaded extends TiktokState {
   const TiktokLoaded(this.tiktok);
 }
 
+class DownloadInProgress extends TiktokState {
+  final int progress;
+
+  @override
+  List<Object> get props => [progress];
+
+  const DownloadInProgress(this.progress);
+}
+
+class TiktokCompleted extends TiktokState {}
+
+class TiktokText extends TiktokState {
+  final bool hasText;
+
+  @override
+  List<Object> get props => [hasText];
+
+  const TiktokText(this.hasText);
+}
+
 class TiktokError extends TiktokState {
   final String error;
 

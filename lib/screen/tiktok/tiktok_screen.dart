@@ -9,6 +9,7 @@ class TiktokScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TextEditingController linkTiktok = TextEditingController();
+    TiktokBloc tiktokBloc = context.read<TiktokBloc>();
 
     void showErrorDialog(BuildContext context, String message) {
       showDialog(
@@ -36,8 +37,7 @@ class TiktokScreen extends StatelessWidget {
         children: [
           Center(
             child: SizedBox(
-              width: 200,
-              height: 200,
+              height: MediaQuery.of(context).size.height * 0.2,
               child: Image.asset(
                 'assets/logo/tiktok-logo.png',
                 fit: BoxFit.cover,
@@ -46,15 +46,31 @@ class TiktokScreen extends StatelessWidget {
           ),
           Column(
             children: [
-              TextField(
-                controller: linkTiktok,
-                decoration: const InputDecoration(
-                  hintText: 'Salin Link',
-                  border: OutlineInputBorder(),
-                  contentPadding: EdgeInsets.symmetric(
-                    horizontal: 20,
-                  ),
-                ),
+              BlocBuilder<TiktokBloc, TiktokState>(
+                bloc: tiktokBloc,
+                builder: (context, state) {
+                  return TextField(
+                    controller: linkTiktok,
+                    onChanged: (value) {
+                      tiktokBloc.add(TextChanged(value.isNotEmpty));
+                    },
+                    decoration: InputDecoration(
+                        hintText: 'Salin Link',
+                        border: const OutlineInputBorder(),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                        ),
+                        suffixIcon: state is TiktokText
+                            ? state.hasText
+                                ? IconButton(
+                                    onPressed: () {
+                                      linkTiktok.clear();
+                                    },
+                                    icon: const Icon(Icons.clear))
+                                : null
+                            : const SizedBox()),
+                  );
+                },
               ),
               const SizedBox(
                 height: 10,
@@ -98,9 +114,7 @@ class TiktokScreen extends StatelessWidget {
                             ),
                           );
                         } else {
-                          context
-                              .read<TiktokBloc>()
-                              .add(FetchTiktok(linkTiktok.text));
+                          tiktokBloc.add(FetchTiktok(linkTiktok.text));
                         }
                       },
                       child: Text(
