@@ -1,4 +1,3 @@
-import 'package:app_downloader/bloc/instagram/instagram_bloc.dart';
 import 'package:app_downloader/bloc/tiktok/tiktok_bloc.dart';
 import 'package:app_downloader/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -14,11 +13,8 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => TiktokBloc(),
         ),
-        BlocProvider(
-          create: (context) => InstagramBloc(),
-        ),
       ],
-      child: AppView(),
+      child: const AppView(),
     );
   }
 }
@@ -28,7 +24,7 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomeScreen(),
     );

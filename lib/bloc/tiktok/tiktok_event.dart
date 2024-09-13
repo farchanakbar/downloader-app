@@ -30,7 +30,7 @@ class StartDownloadMp3 extends TiktokEvent {
 class TextChanged extends TiktokEvent {
   final bool isText;
 
-  const TextChanged(this.isText);
+  const TextChanged({this.isText = false});
 }
 
 class CancelDownloadMp4 extends TiktokEvent {}
