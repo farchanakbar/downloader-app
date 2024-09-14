@@ -1,3 +1,7 @@
+import 'package:app_downloader/bloc/facebook/facebook_bloc.dart';
+import 'package:app_downloader/bloc/gdrive/gdrive_bloc.dart';
+import 'package:app_downloader/bloc/instagram/instagram_bloc.dart';
+import 'package:app_downloader/bloc/mediafire/mediafire_bloc.dart';
 import 'package:app_downloader/bloc/tiktok/tiktok_bloc.dart';
 import 'package:app_downloader/screen/home/home_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +16,18 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) => TiktokBloc(),
+        ),
+        BlocProvider(
+          create: (context) => InstagramBloc(),
+        ),
+        BlocProvider(
+          create: (context) => FacebookBloc(),
+        ),
+        BlocProvider(
+          create: (context) => MediafireBloc(),
+        ),
+        BlocProvider(
+          create: (context) => GdriveBloc(),
         ),
       ],
       child: const AppView(),

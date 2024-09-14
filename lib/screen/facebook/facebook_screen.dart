@@ -1,30 +1,29 @@
-import 'package:app_downloader/screen/tiktok/tiktok_detail_screen.dart';
+import 'package:app_downloader/bloc/facebook/facebook_bloc.dart';
+import 'package:app_downloader/screen/facebook/facebook_detail_screen.dart';
 import 'package:app_downloader/widgets/button_back.dart';
 import 'package:app_downloader/widgets/logo_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/tiktok/tiktok_bloc.dart';
-
-class TiktokScreen extends StatefulWidget {
-  const TiktokScreen({super.key});
+class FacebookScreen extends StatefulWidget {
+  const FacebookScreen({super.key});
 
   @override
-  State<TiktokScreen> createState() => _TiktokScreenState();
+  State<FacebookScreen> createState() => _FacebookScreenState();
 }
 
-class _TiktokScreenState extends State<TiktokScreen> {
-  TextEditingController linkTiktok = TextEditingController();
+class _FacebookScreenState extends State<FacebookScreen> {
+  TextEditingController linkFacebook = TextEditingController();
 
   @override
   void dispose() {
-    linkTiktok.dispose();
+    linkFacebook.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    TiktokBloc tiktokB = context.read<TiktokBloc>();
+    FacebookBloc facebookB = context.read<FacebookBloc>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -36,33 +35,33 @@ class _TiktokScreenState extends State<TiktokScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const LogoApps(img: 'assets/logo/tiktok-logo.png'),
+                    const LogoApps(img: 'assets/logo/facebook-logo.png'),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        BlocBuilder<TiktokBloc, TiktokState>(
-                          bloc: tiktokB,
+                        BlocBuilder<FacebookBloc, FacebookState>(
+                          bloc: facebookB,
                           builder: (context, state) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Hanya bisa download video!'),
                                 TextField(
-                                  controller: linkTiktok,
+                                  controller: linkFacebook,
                                   onChanged: (value) {
-                                    tiktokB.add(
-                                      TiktokTextChanged(
+                                    facebookB.add(
+                                      FacebookTextChanged(
                                           isText: value.isNotEmpty),
                                     );
                                   },
                                   decoration: InputDecoration(
-                                    suffixIcon: state is TiktokText
+                                    suffixIcon: state is FacebookText
                                         ? state.hasText
                                             ? IconButton(
                                                 onPressed: () {
-                                                  linkTiktok.clear();
-                                                  tiktokB.add(
-                                                    const TiktokTextChanged(
+                                                  linkFacebook.clear();
+                                                  facebookB.add(
+                                                    const FacebookTextChanged(
                                                         isText: false),
                                                   );
                                                 },
@@ -75,7 +74,7 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                         horizontal: 10),
                                   ),
                                 ),
-                                state is TiktokError
+                                state is FacebookError
                                     ? Text(
                                         state.error,
                                         style: const TextStyle(
@@ -90,14 +89,14 @@ class _TiktokScreenState extends State<TiktokScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        BlocConsumer<TiktokBloc, TiktokState>(
+                        BlocConsumer<FacebookBloc, FacebookState>(
                           listener: (context, state) {
-                            if (state is TiktokLoaded) {
+                            if (state is FacebookLoaded) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => TiktokDetailScreen(
-                                    tiktok: state.tiktok,
+                                  builder: (context) => FacebookDetailScreen(
+                                    facebookReels: state.facebook,
                                   ),
                                 ),
                               );
@@ -115,7 +114,7 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (linkTiktok.text.isEmpty) {
+                                  if (linkFacebook.text.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         duration: Duration(
@@ -128,11 +127,12 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                       ),
                                     );
                                   } else {
-                                    tiktokB.add(FetchTiktok(linkTiktok.text));
+                                    facebookB
+                                        .add(FetchFacebook(linkFacebook.text));
                                   }
                                 },
                                 child: Text(
-                                  state is TiktokLoading
+                                  state is FacebookLoading
                                       ? 'Loading...'
                                       : 'Download',
                                   style: const TextStyle(

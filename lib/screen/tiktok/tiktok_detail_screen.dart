@@ -1,6 +1,6 @@
-import 'dart:math';
-
 import 'package:app_downloader/data/models/tiktok.dart';
+import 'package:app_downloader/helper/format_file_size.dart';
+import 'package:app_downloader/widgets/button_back.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -19,27 +19,14 @@ class TiktokDetailScreen extends StatelessWidget {
     TiktokBloc tiktokBlocMp4 = TiktokBloc();
     TiktokBloc tiktokBlocMp4Hd = TiktokBloc();
     TiktokBloc tiktokBlocMp3 = TiktokBloc();
-    String formatFileSize(int bytes, [int decimals = 2]) {
-      if (bytes <= 0) return "0 B";
-      const suffixes = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
-      var i = (log(bytes) / log(1024)).floor();
-      return '${(bytes / pow(1024, i)).toStringAsFixed(decimals)} ${suffixes[i]}';
-    }
+    FormatFileSize formatFile = FormatFileSize();
 
     return Scaffold(
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: const Row(
-                children: [
-                  Icon(Icons.arrow_back_ios_new_rounded),
-                  Text('Kembali')
-                ],
-              ),
-            ),
+            ButtonBack(),
             const SizedBox(
               height: 10,
             ),
@@ -97,7 +84,7 @@ class TiktokDetailScreen extends StatelessWidget {
                   width: 1,
                   color: Colors.black,
                 ),
-                Text(formatFileSize(tiktok.size!)),
+                Text(formatFile.formatFileSize(tiktok.size!)),
                 Container(
                   height: 10,
                   width: 1,
@@ -105,11 +92,15 @@ class TiktokDetailScreen extends StatelessWidget {
                 ),
                 tiktok.hdSize == 0
                     ? const Text('-')
-                    : Text('HD ${formatFileSize(tiktok.hdSize!)}'),
+                    : Text('HD ${formatFile.formatFileSize(tiktok.hdSize!)}'),
               ],
             ),
-            const SizedBox(
-              height: 10,
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              formatFile.note,
+              style: TextStyle(color: Colors.red),
             ),
 
             //Download video tiktok biasa
@@ -118,14 +109,14 @@ class TiktokDetailScreen extends StatelessWidget {
               builder: (context, state) {
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: state is DownloadInProgress
+                      backgroundColor: state is TiktokDownloadInProgress
                           ? const Color.fromARGB(190, 250, 250, 250)
                           : Colors.blue),
                   onPressed: () {
-                    state is DownloadInProgress
+                    state is TiktokDownloadInProgress
                         ? null
                         : tiktokBlocMp4.add(
-                            StartDownloadMp4(
+                            TiktokStartDownloadMp4(
                               tiktok.play.toString(),
                               tiktok.id.toString(),
                             ),
@@ -134,7 +125,7 @@ class TiktokDetailScreen extends StatelessWidget {
                   child: Text(
                     state is TiktokLoading ? 'Loading...' : 'Download Video',
                     style: TextStyle(
-                        color: state is DownloadInProgress
+                        color: state is TiktokDownloadInProgress
                             ? const Color.fromARGB(255, 209, 199, 199)
                             : Colors.white),
                   ),
@@ -144,9 +135,9 @@ class TiktokDetailScreen extends StatelessWidget {
             BlocBuilder<TiktokBloc, TiktokState>(
               bloc: tiktokBlocMp4,
               builder: (context, state) {
-                if (state is DownloadInProgress) {
+                if (state is TiktokDownloadInProgress) {
                   return Text(
-                    '${formatFileSize(state.progress)}/${formatFileSize(tiktok.size!)}',
+                    '${formatFile.formatFileSize(state.progress)}/${formatFile.formatFileSize(tiktok.size!)}',
                     textAlign: TextAlign.center,
                   );
                 } else if (state is TiktokCompleted) {
@@ -155,7 +146,7 @@ class TiktokDetailScreen extends StatelessWidget {
                   );
                 } else if (state is TiktokError) {
                   return const Center(
-                    child: Text('Download Dibatalkan'),
+                    child: Text('Download Mp4 Dibatalkan'),
                   );
                 }
                 return const SizedBox();
@@ -164,13 +155,13 @@ class TiktokDetailScreen extends StatelessWidget {
             BlocBuilder<TiktokBloc, TiktokState>(
               bloc: tiktokBlocMp4,
               builder: (context, state) {
-                if (state is DownloadInProgress) {
+                if (state is TiktokDownloadInProgress) {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
                     onPressed: () {
-                      tiktokBlocMp4.add(CancelDownloadMp4());
+                      tiktokBlocMp4.add(TiktokCancelDownloadMp4());
                     },
                     child: const Text('Batal Download'),
                   );
@@ -185,14 +176,14 @@ class TiktokDetailScreen extends StatelessWidget {
               builder: (context, state) {
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: state is DownloadInProgress
+                      backgroundColor: state is TiktokDownloadInProgress
                           ? const Color.fromARGB(190, 250, 250, 250)
                           : Colors.blue),
                   onPressed: () {
-                    state is DownloadInProgress
+                    state is TiktokDownloadInProgress
                         ? null
                         : tiktokBlocMp4Hd.add(
-                            StartDownloadMp4(
+                            TiktokStartDownloadMp4(
                               tiktok.hdplay.toString(),
                               '${tiktok.id}HD',
                             ),
@@ -201,7 +192,7 @@ class TiktokDetailScreen extends StatelessWidget {
                   child: Text(
                     state is TiktokLoading ? 'Loading...' : 'Download Video HD',
                     style: TextStyle(
-                        color: state is DownloadInProgress
+                        color: state is TiktokDownloadInProgress
                             ? const Color.fromARGB(255, 209, 199, 199)
                             : Colors.white),
                   ),
@@ -211,9 +202,9 @@ class TiktokDetailScreen extends StatelessWidget {
             BlocBuilder<TiktokBloc, TiktokState>(
               bloc: tiktokBlocMp4Hd,
               builder: (context, state) {
-                if (state is DownloadInProgress) {
+                if (state is TiktokDownloadInProgress) {
                   return Text(
-                    '${formatFileSize(state.progress)}/${formatFileSize(tiktok.hdSize!)}',
+                    '${formatFile.formatFileSize(state.progress)}/${formatFile.formatFileSize(tiktok.hdSize!)}',
                     textAlign: TextAlign.center,
                   );
                 } else if (state is TiktokCompleted) {
@@ -231,13 +222,13 @@ class TiktokDetailScreen extends StatelessWidget {
             BlocBuilder<TiktokBloc, TiktokState>(
               bloc: tiktokBlocMp4Hd,
               builder: (context, state) {
-                if (state is DownloadInProgress) {
+                if (state is TiktokDownloadInProgress) {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
                     onPressed: () {
-                      tiktokBlocMp4Hd.add(CancelDownloadMp4());
+                      tiktokBlocMp4Hd.add(TiktokCancelDownloadMp4());
                     },
                     child: const Text('Batal Download'),
                   );
@@ -254,7 +245,14 @@ class TiktokDetailScreen extends StatelessWidget {
                   Icons.music_note_sharp,
                   size: 20,
                 ),
-                Text(tiktok.musicInfo!.title.toString().toUpperCase()),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  child: Text(
+                    tiktok.musicInfo!.title.toString().toUpperCase(),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
 
@@ -264,14 +262,14 @@ class TiktokDetailScreen extends StatelessWidget {
               builder: (context, state) {
                 return ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: state is DownloadInProgress
+                      backgroundColor: state is TiktokDownloadInProgress
                           ? const Color.fromARGB(190, 250, 250, 250)
                           : Colors.blue),
                   onPressed: () {
-                    state is DownloadInProgress
+                    state is TiktokDownloadInProgress
                         ? null
                         : tiktokBlocMp3.add(
-                            StartDownloadMp3(
+                            TiktokStartDownloadMp3(
                               tiktok.music.toString(),
                               tiktok.musicInfo!.id.toString(),
                             ),
@@ -280,7 +278,7 @@ class TiktokDetailScreen extends StatelessWidget {
                   child: Text(
                     state is TiktokLoading ? 'Loading...' : 'Download Musik',
                     style: TextStyle(
-                        color: state is DownloadInProgress
+                        color: state is TiktokDownloadInProgress
                             ? const Color.fromARGB(255, 209, 199, 199)
                             : Colors.white),
                   ),
@@ -290,9 +288,9 @@ class TiktokDetailScreen extends StatelessWidget {
             BlocBuilder<TiktokBloc, TiktokState>(
               bloc: tiktokBlocMp3,
               builder: (context, state) {
-                if (state is DownloadInProgress) {
+                if (state is TiktokDownloadInProgress) {
                   return Text(
-                    '${formatFileSize(state.progress)}',
+                    formatFile.formatFileSize(state.progress),
                     textAlign: TextAlign.center,
                   );
                 } else if (state is TiktokCompleted) {
@@ -310,13 +308,13 @@ class TiktokDetailScreen extends StatelessWidget {
             BlocBuilder<TiktokBloc, TiktokState>(
               bloc: tiktokBlocMp3,
               builder: (context, state) {
-                if (state is DownloadInProgress) {
+                if (state is TiktokDownloadInProgress) {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
                     ),
                     onPressed: () {
-                      tiktokBlocMp3.add(CancelDownloadMp3());
+                      tiktokBlocMp3.add(TiktokCancelDownloadMp3());
                     },
                     child: const Text('Batal Download'),
                   );

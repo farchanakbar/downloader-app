@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:app_downloader/data/models/tiktok.dart';
+import 'package:app_downloader/helper/save_delete_video.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path_provider/path_provider.dart';
 
 part 'tiktok_event.dart';
@@ -32,22 +32,6 @@ class TiktokBloc extends Bloc<TiktokEvent, TiktokState> {
   CancelToken cancelTokenMp4 = CancelToken();
   CancelToken cancelTokenMp3 = CancelToken();
 
-  Future<void> saveDownloadedVideoToGallery(
-      {required String videoPath, required String id}) async {
-    await ImageGallerySaver.saveFile(
-      videoPath,
-      name: 'FarchanIg-${id}',
-    );
-  }
-
-  Future<void> removeDownloadedVideo({required String videoPath}) async {
-    try {
-      Directory(videoPath).deleteSync(recursive: true);
-    } catch (error) {
-      print('$error');
-    }
-  }
-
   TiktokBloc() : super(TiktokInitial()) {
     on<FetchTiktok>(
       (event, emit) async {
@@ -64,6 +48,7 @@ class TiktokBloc extends Bloc<TiktokEvent, TiktokState> {
               ),
             ),
           );
+          emit(TiktokCompleted());
         } catch (e) {
           emit(
             const TiktokError(
@@ -74,11 +59,12 @@ class TiktokBloc extends Bloc<TiktokEvent, TiktokState> {
       },
     );
 
-    on<StartDownloadMp4>(
+    on<TiktokStartDownloadMp4>(
       (event, emit) async {
         emit(TiktokLoading());
         final dir = await getApplicationDocumentsDirectory();
-        String path = '${dir.path}/FarchanTiktok-${event.fileName}.mp4';
+        String fileName = 'FarchanTiktok-${event.fileName}.mp4';
+        String path = '${dir.path}/$fileName';
         print(path);
         try {
           await dioMp4.download(
@@ -86,14 +72,14 @@ class TiktokBloc extends Bloc<TiktokEvent, TiktokState> {
             path,
             onReceiveProgress: (received, total) {
               if (total != -1) {
-                emit(DownloadInProgress(received));
+                emit(TiktokDownloadInProgress(received));
               }
             },
             cancelToken: cancelTokenMp4,
           );
-          await saveDownloadedVideoToGallery(
-              videoPath: path, id: event.fileName);
-          await removeDownloadedVideo(videoPath: path);
+          await SaveDeleteVideo()
+              .saveDownloadedVideoToGallery(videoPath: path, id: fileName);
+          await SaveDeleteVideo().removeDownloadedVideo(videoPath: path);
           emit(TiktokCompleted());
         } catch (e) {
           emit(TiktokError(e.toString()));
@@ -101,18 +87,19 @@ class TiktokBloc extends Bloc<TiktokEvent, TiktokState> {
       },
     );
 
-    on<StartDownloadMp3>(
+    on<TiktokStartDownloadMp3>(
       (event, emit) async {
         emit(TiktokLoading());
         final dir = Directory("/storage/emulated/0/Download/");
-        String path = '${dir.path}/FarchanTiktok-${event.fileName}.mp3';
+        String fileName = 'FarchanTiktok-${event.fileName}.mp3';
+        String path = '${dir.path}$fileName';
         try {
           await dioMp3.download(
             event.url,
             path,
             onReceiveProgress: (received, total) {
               if (total != -1) {
-                emit(DownloadInProgress(received));
+                emit(TiktokDownloadInProgress(received));
               }
             },
             cancelToken: cancelTokenMp3,
@@ -124,25 +111,24 @@ class TiktokBloc extends Bloc<TiktokEvent, TiktokState> {
       },
     );
 
-    on<CancelDownloadMp4>(
+    on<TiktokCancelDownloadMp4>(
       (event, emit) {
         cancelTokenMp4.cancel();
         cancelTokenMp4 = CancelToken();
-        emit(TiktokError('Download Mp4 Dibatalkan'));
+        emit(const TiktokError('Download Mp4 Dibatalkan'));
       },
     );
 
-    on<CancelDownloadMp3>(
+    on<TiktokCancelDownloadMp3>(
       (event, emit) {
         cancelTokenMp3.cancel();
         cancelTokenMp3 = CancelToken();
-        emit(TiktokError('Download Mp3 Dibatalkan'));
+        emit(const TiktokError('Download Mp3 Dibatalkan'));
       },
     );
 
-    on<TextChanged>(
+    on<TiktokTextChanged>(
       (event, emit) {
-        print('${event.isText} test');
         emit(
           TiktokText(event.isText),
         );

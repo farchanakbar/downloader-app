@@ -17,13 +17,13 @@ class TiktokLoaded extends TiktokState {
   const TiktokLoaded(this.tiktok);
 }
 
-class DownloadInProgress extends TiktokState {
+class TiktokDownloadInProgress extends TiktokState {
   final int progress;
 
   @override
   List<Object> get props => [progress];
 
-  const DownloadInProgress(this.progress);
+  const TiktokDownloadInProgress(this.progress);
 }
 
 class TiktokCompleted extends TiktokState {}

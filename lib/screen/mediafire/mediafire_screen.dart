@@ -1,30 +1,29 @@
-import 'package:app_downloader/screen/tiktok/tiktok_detail_screen.dart';
+import 'package:app_downloader/bloc/mediafire/mediafire_bloc.dart';
+import 'package:app_downloader/screen/mediafire/mediafire_detail_screen.dart';
 import 'package:app_downloader/widgets/button_back.dart';
 import 'package:app_downloader/widgets/logo_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/tiktok/tiktok_bloc.dart';
-
-class TiktokScreen extends StatefulWidget {
-  const TiktokScreen({super.key});
+class MediafireScreen extends StatefulWidget {
+  const MediafireScreen({super.key});
 
   @override
-  State<TiktokScreen> createState() => _TiktokScreenState();
+  State<MediafireScreen> createState() => _MediafireScreenState();
 }
 
-class _TiktokScreenState extends State<TiktokScreen> {
-  TextEditingController linkTiktok = TextEditingController();
+class _MediafireScreenState extends State<MediafireScreen> {
+  TextEditingController linkMediafire = TextEditingController();
 
   @override
   void dispose() {
-    linkTiktok.dispose();
+    linkMediafire.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    TiktokBloc tiktokB = context.read<TiktokBloc>();
+    MediafireBloc mediafireB = context.read<MediafireBloc>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -36,33 +35,33 @@ class _TiktokScreenState extends State<TiktokScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const LogoApps(img: 'assets/logo/tiktok-logo.png'),
+                    const LogoApps(img: 'assets/logo/mediafire-logo.png'),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        BlocBuilder<TiktokBloc, TiktokState>(
-                          bloc: tiktokB,
+                        BlocBuilder<MediafireBloc, MediafireState>(
+                          bloc: mediafireB,
                           builder: (context, state) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Hanya bisa download video!'),
+                                Text('Tidak bisa download format Jpg dan Png!'),
                                 TextField(
-                                  controller: linkTiktok,
+                                  controller: linkMediafire,
                                   onChanged: (value) {
-                                    tiktokB.add(
-                                      TiktokTextChanged(
+                                    mediafireB.add(
+                                      MediafireTextChanged(
                                           isText: value.isNotEmpty),
                                     );
                                   },
                                   decoration: InputDecoration(
-                                    suffixIcon: state is TiktokText
+                                    suffixIcon: state is MediafireText
                                         ? state.hasText
                                             ? IconButton(
                                                 onPressed: () {
-                                                  linkTiktok.clear();
-                                                  tiktokB.add(
-                                                    const TiktokTextChanged(
+                                                  linkMediafire.clear();
+                                                  mediafireB.add(
+                                                    const MediafireTextChanged(
                                                         isText: false),
                                                   );
                                                 },
@@ -75,7 +74,7 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                         horizontal: 10),
                                   ),
                                 ),
-                                state is TiktokError
+                                state is MediafireError
                                     ? Text(
                                         state.error,
                                         style: const TextStyle(
@@ -90,16 +89,15 @@ class _TiktokScreenState extends State<TiktokScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        BlocConsumer<TiktokBloc, TiktokState>(
+                        BlocConsumer<MediafireBloc, MediafireState>(
                           listener: (context, state) {
-                            if (state is TiktokLoaded) {
+                            if (state is MediafireLoaded) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => TiktokDetailScreen(
-                                    tiktok: state.tiktok,
-                                  ),
-                                ),
+                                    builder: (context) => MediafireDetailScreen(
+                                          mediafire: state.mediafire,
+                                        )),
                               );
                             }
                           },
@@ -115,7 +113,7 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (linkTiktok.text.isEmpty) {
+                                  if (linkMediafire.text.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         duration: Duration(
@@ -128,11 +126,12 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                       ),
                                     );
                                   } else {
-                                    tiktokB.add(FetchTiktok(linkTiktok.text));
+                                    mediafireB.add(
+                                        FetchMediafire(linkMediafire.text));
                                   }
                                 },
                                 child: Text(
-                                  state is TiktokLoading
+                                  state is MediafireLoading
                                       ? 'Loading...'
                                       : 'Download',
                                   style: const TextStyle(

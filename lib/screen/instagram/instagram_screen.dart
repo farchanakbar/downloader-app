@@ -1,30 +1,29 @@
-import 'package:app_downloader/screen/tiktok/tiktok_detail_screen.dart';
+import 'package:app_downloader/bloc/instagram/instagram_bloc.dart';
+import 'package:app_downloader/screen/instagram/instagram_detail_screen.dart';
 import 'package:app_downloader/widgets/button_back.dart';
 import 'package:app_downloader/widgets/logo_app.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/tiktok/tiktok_bloc.dart';
-
-class TiktokScreen extends StatefulWidget {
-  const TiktokScreen({super.key});
+class InstagramScreen extends StatefulWidget {
+  const InstagramScreen({super.key});
 
   @override
-  State<TiktokScreen> createState() => _TiktokScreenState();
+  State<InstagramScreen> createState() => _InstagramScreenState();
 }
 
-class _TiktokScreenState extends State<TiktokScreen> {
-  TextEditingController linkTiktok = TextEditingController();
+class _InstagramScreenState extends State<InstagramScreen> {
+  TextEditingController linkInstagram = TextEditingController();
 
   @override
   void dispose() {
-    linkTiktok.dispose();
+    linkInstagram.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    TiktokBloc tiktokB = context.read<TiktokBloc>();
+    InstagramBloc instagramB = context.read<InstagramBloc>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -36,33 +35,33 @@ class _TiktokScreenState extends State<TiktokScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    const LogoApps(img: 'assets/logo/tiktok-logo.png'),
+                    const LogoApps(img: 'assets/logo/instagram-logo.png'),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        BlocBuilder<TiktokBloc, TiktokState>(
-                          bloc: tiktokB,
+                        BlocBuilder<InstagramBloc, InstagramState>(
+                          bloc: instagramB,
                           builder: (context, state) {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text('Hanya bisa download video!'),
                                 TextField(
-                                  controller: linkTiktok,
+                                  controller: linkInstagram,
                                   onChanged: (value) {
-                                    tiktokB.add(
-                                      TiktokTextChanged(
+                                    instagramB.add(
+                                      InstagramTextChanged(
                                           isText: value.isNotEmpty),
                                     );
                                   },
                                   decoration: InputDecoration(
-                                    suffixIcon: state is TiktokText
+                                    suffixIcon: state is InstagramText
                                         ? state.hasText
                                             ? IconButton(
                                                 onPressed: () {
-                                                  linkTiktok.clear();
-                                                  tiktokB.add(
-                                                    const TiktokTextChanged(
+                                                  linkInstagram.clear();
+                                                  instagramB.add(
+                                                    const InstagramTextChanged(
                                                         isText: false),
                                                   );
                                                 },
@@ -75,7 +74,7 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                         horizontal: 10),
                                   ),
                                 ),
-                                state is TiktokError
+                                state is InstagramError
                                     ? Text(
                                         state.error,
                                         style: const TextStyle(
@@ -90,14 +89,14 @@ class _TiktokScreenState extends State<TiktokScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        BlocConsumer<TiktokBloc, TiktokState>(
+                        BlocConsumer<InstagramBloc, InstagramState>(
                           listener: (context, state) {
-                            if (state is TiktokLoaded) {
+                            if (state is InstagramLoaded) {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => TiktokDetailScreen(
-                                    tiktok: state.tiktok,
+                                  builder: (context) => InstagramDetailScreen(
+                                    instagram: state.instagram,
                                   ),
                                 ),
                               );
@@ -115,7 +114,7 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                   ),
                                 ),
                                 onPressed: () {
-                                  if (linkTiktok.text.isEmpty) {
+                                  if (linkInstagram.text.isEmpty) {
                                     ScaffoldMessenger.of(context).showSnackBar(
                                       const SnackBar(
                                         duration: Duration(
@@ -128,11 +127,12 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                       ),
                                     );
                                   } else {
-                                    tiktokB.add(FetchTiktok(linkTiktok.text));
+                                    instagramB.add(
+                                        FetchInstagram(linkInstagram.text));
                                   }
                                 },
                                 child: Text(
-                                  state is TiktokLoading
+                                  state is InstagramLoading
                                       ? 'Loading...'
                                       : 'Download',
                                   style: const TextStyle(
