@@ -51,7 +51,8 @@ class _FacebookScreenState extends State<FacebookScreen> {
                                   onChanged: (value) {
                                     facebookB.add(
                                       FacebookTextChanged(
-                                          isText: value.isNotEmpty),
+                                        isText: value.isNotEmpty,
+                                      ),
                                     );
                                   },
                                   decoration: InputDecoration(

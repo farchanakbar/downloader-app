@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_downloader/data/api_service.dart';
 import 'package:app_downloader/data/models/tiktok.dart';
 import 'package:app_downloader/helper/save_delete_video.dart';
 import 'package:bloc/bloc.dart';
@@ -11,26 +12,11 @@ part 'tiktok_event.dart';
 part 'tiktok_state.dart';
 
 class TiktokBloc extends Bloc<TiktokEvent, TiktokState> {
-  final dioMp4 = Dio(
-    BaseOptions(
-      baseUrl: 'https://api.ryzendesu.vip',
-      headers: {
-        'User-Agent': 'axios',
-      },
-    ),
-  );
+  final dioMp4 = ApiService().dio;
+  final dioMp3 = ApiService().dio;
 
-  final dioMp3 = Dio(
-    BaseOptions(
-      baseUrl: 'https://api.ryzendesu.vip',
-      headers: {
-        'User-Agent': 'axios',
-      },
-    ),
-  );
-
-  CancelToken cancelTokenMp4 = CancelToken();
-  CancelToken cancelTokenMp3 = CancelToken();
+  CancelToken cancelTokenMp4 = ApiService().cancelToken;
+  CancelToken cancelTokenMp3 = ApiService().cancelToken;
 
   TiktokBloc() : super(TiktokInitial()) {
     on<FetchTiktok>(

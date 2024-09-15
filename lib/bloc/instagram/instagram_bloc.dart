@@ -1,3 +1,4 @@
+import 'package:app_downloader/data/api_service.dart';
 import 'package:app_downloader/data/models/instagram.dart';
 import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
@@ -10,16 +11,8 @@ part 'instagram_event.dart';
 part 'instagram_state.dart';
 
 class InstagramBloc extends Bloc<InstagramEvent, InstagramState> {
-  final dioMp4 = Dio(
-    BaseOptions(
-      baseUrl: 'https://api.ryzendesu.vip',
-      headers: {
-        'User-Agent': 'axios',
-      },
-    ),
-  );
-
-  CancelToken cancelTokenMp4 = CancelToken();
+  final dioMp4 = ApiService().dio;
+  CancelToken cancelTokenMp4 = ApiService().cancelToken;
 
   InstagramBloc() : super(InstagramInitial()) {
     on<FetchInstagram>(

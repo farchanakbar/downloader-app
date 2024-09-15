@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:app_downloader/data/api_service.dart';
 import 'package:app_downloader/data/models/mediafire.dart';
 import 'package:app_downloader/helper/save_delete_video.dart';
 import 'package:bloc/bloc.dart';
@@ -10,16 +11,8 @@ part 'mediafire_event.dart';
 part 'mediafire_state.dart';
 
 class MediafireBloc extends Bloc<MediafireEvent, MediafireState> {
-  final dio = Dio(
-    BaseOptions(
-      baseUrl: 'https://api.ryzendesu.vip',
-      headers: {
-        'User-Agent': 'axios',
-      },
-    ),
-  );
-
-  CancelToken cancelToken = CancelToken();
+  final dio = ApiService().dio;
+  CancelToken cancelToken = ApiService().cancelToken;
 
   MediafireBloc() : super(MediafireInitial()) {
     on<FetchMediafire>(

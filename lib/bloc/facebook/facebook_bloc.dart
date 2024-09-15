@@ -1,3 +1,4 @@
+import 'package:app_downloader/data/api_service.dart';
 import 'package:app_downloader/data/models/facebook.dart';
 import 'package:app_downloader/helper/save_delete_video.dart';
 import 'package:bloc/bloc.dart';
@@ -9,16 +10,8 @@ part 'facebook_event.dart';
 part 'facebook_state.dart';
 
 class FacebookBloc extends Bloc<FacebookEvent, FacebookState> {
-  final dioMp4 = Dio(
-    BaseOptions(
-      baseUrl: 'https://api.ryzendesu.vip',
-      headers: {
-        'User-Agent': 'axios',
-      },
-    ),
-  );
-
-  CancelToken cancelTokenMp4 = CancelToken();
+  final dioMp4 = ApiService().dio;
+  CancelToken cancelTokenMp4 = ApiService().cancelToken;
   FacebookBloc() : super(FacebookInitial()) {
     on<FetchFacebook>(
       (event, emit) async {

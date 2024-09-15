@@ -1,3 +1,4 @@
+import 'package:app_downloader/screen/chatgpt/chat_gpt_screen.dart';
 import 'package:app_downloader/screen/facebook/facebook_screen.dart';
 import 'package:app_downloader/screen/gdrive/gdrive_screen.dart';
 import 'package:app_downloader/screen/instagram/instagram_screen.dart';
@@ -37,19 +38,9 @@ class HomeScreen extends StatelessWidget {
                       builder: (context) => const TiktokScreen(),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: Image.asset(
-                          'assets/logo/tiktok-logo.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const Text('Tiktok')
-                    ],
+                  child: const Logo(
+                    logo: 'assets/logo/tiktok-logo.png',
+                    title: 'Tiktok',
                   ),
                 ),
                 GestureDetector(
@@ -59,19 +50,9 @@ class HomeScreen extends StatelessWidget {
                       builder: (context) => const InstagramScreen(),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: Image.asset(
-                          'assets/logo/instagram-logo.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const Text('Instagram')
-                    ],
+                  child: const Logo(
+                    logo: 'assets/logo/instagram-logo.png',
+                    title: 'Instagram',
                   ),
                 ),
                 GestureDetector(
@@ -81,19 +62,9 @@ class HomeScreen extends StatelessWidget {
                       builder: (context) => const FacebookScreen(),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: Image.asset(
-                          'assets/logo/facebook-logo.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const Text('Facebook')
-                    ],
+                  child: const Logo(
+                    logo: 'assets/logo/facebook-logo.png',
+                    title: 'Facebook',
                   ),
                 ),
               ],
@@ -111,19 +82,9 @@ class HomeScreen extends StatelessWidget {
                       builder: (context) => const MediafireScreen(),
                     ),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: Image.asset(
-                          'assets/logo/mediafire-logo.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const Text('MediaFire')
-                    ],
+                  child: const Logo(
+                    logo: 'assets/logo/mediafire-logo.png',
+                    title: 'Mediafire',
                   ),
                 ),
                 GestureDetector(
@@ -132,19 +93,64 @@ class HomeScreen extends StatelessWidget {
                     MaterialPageRoute(
                         builder: (context) => const GdriveScreen()),
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: 60,
-                        width: 60,
-                        child: Image.asset(
-                          'assets/logo/gdrive-logo.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                      const Text('Google Drive')
-                    ],
+                  child: const Logo(
+                    logo: 'assets/logo/gdrive-logo.png',
+                    title: 'Google Drive',
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            const Center(
+              child: Text(
+                'AI',
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const ChatGptScreen(),
+                    ),
+                  ),
+                  child: const Logo(
+                    logo: 'assets/logo/gpt-logo.png',
+                    title: 'Chat GPT',
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const GdriveScreen()),
+                  ),
+                  child: const Logo(
+                    logo: 'assets/logo/remini-logo.png',
+                    title: 'Remini',
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const FacebookScreen(),
+                    ),
+                  ),
+                  child: const Logo(
+                    logo: 'assets/logo/remove-logo.png',
+                    title: 'Remove BG',
                   ),
                 ),
               ],
@@ -152,6 +158,34 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class Logo extends StatelessWidget {
+  final String logo;
+  final String title;
+  const Logo({
+    required this.logo,
+    required this.title,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 60,
+          width: 60,
+          child: Image.asset(
+            logo,
+            fit: BoxFit.contain,
+          ),
+        ),
+        Text(title)
+      ],
     );
   }
 }
