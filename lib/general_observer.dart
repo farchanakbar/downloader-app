@@ -4,7 +4,7 @@ class MyObserver extends BlocObserver {
   @override
   void onChange(BlocBase bloc, Change change) {
     super.onChange(bloc, change);
-    print("$bloc => $change");
+    // print("$bloc => $change");
   }
 
   @override

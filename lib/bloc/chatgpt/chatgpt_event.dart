@@ -10,7 +10,10 @@ abstract class ChatgptEvent extends Equatable {
 class ChatgptTextChanged extends ChatgptEvent {
   final bool isText;
 
-  const ChatgptTextChanged({this.isText = false});
+  @override
+  List<Object> get props => [isText];
+
+  const ChatgptTextChanged(this.isText);
 }
 
 class ChatgptSend extends ChatgptEvent {

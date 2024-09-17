@@ -17,8 +17,6 @@ class ChatgptLoaded extends ChatgptState {
   const ChatgptLoaded(this.text);
 }
 
-class ChatgptComplate extends ChatgptState {}
-
 class ChatgptText extends ChatgptState {
   final bool hasText;
 
