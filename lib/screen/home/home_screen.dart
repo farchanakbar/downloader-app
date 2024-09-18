@@ -1,4 +1,3 @@
-import 'package:app_downloader/screen/chatgpt/chat_gpt_screen.dart';
 import 'package:app_downloader/screen/facebook/facebook_screen.dart';
 import 'package:app_downloader/screen/gdrive/gdrive_screen.dart';
 import 'package:app_downloader/screen/instagram/instagram_screen.dart';
@@ -12,13 +11,17 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(20),
+      body: Container(
+        padding: const EdgeInsets.all(20),
+        width: double.infinity,
+        height: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             const Center(
               child: Text(
-                'Downloader',
+                'DOWNLOADER APP',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -96,61 +99,6 @@ class HomeScreen extends StatelessWidget {
                   child: const Logo(
                     logo: 'assets/logo/gdrive-logo.png',
                     title: 'Google Drive',
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            const Center(
-              child: Text(
-                'AI',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ChatGptScreen(),
-                    ),
-                  ),
-                  child: const Logo(
-                    logo: 'assets/logo/gpt-logo.png',
-                    title: 'Chat GPT',
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const GdriveScreen()),
-                  ),
-                  child: const Logo(
-                    logo: 'assets/logo/remini-logo.png',
-                    title: 'Remini',
-                  ),
-                ),
-                GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const FacebookScreen(),
-                    ),
-                  ),
-                  child: const Logo(
-                    logo: 'assets/logo/remove-logo.png',
-                    title: 'Remove BG',
                   ),
                 ),
               ],

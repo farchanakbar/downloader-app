@@ -1,4 +1,3 @@
-import 'package:app_downloader/bloc/chatgpt/chatgpt_bloc.dart';
 import 'package:app_downloader/bloc/facebook/facebook_bloc.dart';
 import 'package:app_downloader/bloc/gdrive/gdrive_bloc.dart';
 import 'package:app_downloader/bloc/instagram/instagram_bloc.dart';
@@ -29,9 +28,6 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => GdriveBloc(),
-        ),
-        BlocProvider(
-          create: (context) => ChatgptBloc(),
         ),
       ],
       child: const AppView(),

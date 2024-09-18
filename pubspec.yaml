@@ -28,6 +28,7 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  before_after: ^3.1.0
   bloc: ^8.1.4
   cupertino_icons: ^1.0.6
   dio: ^5.7.0
@@ -36,7 +37,9 @@ dependencies:
     sdk: flutter
   flutter_bloc: ^8.1.6
   image_gallery_saver: ^2.0.3
+  image_picker: ^1.1.2
   path_provider: ^2.1.4
+  permission_handler: ^11.3.1
   shared_preferences: ^2.3.2
 
 dev_dependencies:
