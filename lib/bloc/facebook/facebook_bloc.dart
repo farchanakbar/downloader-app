@@ -19,12 +19,17 @@ class FacebookBloc extends Bloc<FacebookEvent, FacebookState> {
         try {
           final response =
               await dioMp4.get('/api/downloader/fbdl?url=${event.url}');
-          var data = response.data['data'][0];
-          var hasil = FacebookReels.fromJson(data);
-          emit(
-            FacebookLoaded(hasil),
-          );
-          emit(FacebookCompleted());
+          if (response.statusCode == 500) {
+            // ignore: prefer_const_constructors
+            emit(FacebookError('Server Gangguan'));
+          } else {
+            var data = response.data['data'][0];
+            var hasil = FacebookReels.fromJson(data);
+            emit(
+              FacebookLoaded(hasil),
+            );
+            emit(FacebookCompleted());
+          }
         } catch (e) {
           emit(
             const FacebookError(
@@ -40,7 +45,6 @@ class FacebookBloc extends Bloc<FacebookEvent, FacebookState> {
       final dir = await getApplicationCacheDirectory();
       String fileName = 'FarchanFacebook-${event.fileName}.mp4';
       String path = '${dir.path}/$fileName';
-      print(path);
       try {
         await dioMp4.download(
           event.url,

@@ -1,3 +1,4 @@
+import 'package:app_downloader/data/constans/color.dart';
 import 'package:app_downloader/screen/tiktok/tiktok_detail_screen.dart';
 import 'package:app_downloader/widgets/button_back.dart';
 import 'package:app_downloader/widgets/logo_app.dart';
@@ -26,6 +27,7 @@ class _TiktokScreenState extends State<TiktokScreen> {
   Widget build(BuildContext context) {
     TiktokBloc tiktokB = context.read<TiktokBloc>();
     return Scaffold(
+      backgroundColor: color1,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -46,7 +48,12 @@ class _TiktokScreenState extends State<TiktokScreen> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Hanya bisa download video!'),
+                                Text(
+                                  'Hanya bisa download video!',
+                                  style: TextStyle(
+                                    color: color3,
+                                  ),
+                                ),
                                 TextField(
                                   controller: linkTiktok,
                                   onChanged: (value) {
@@ -55,6 +62,7 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                           isText: value.isNotEmpty),
                                     );
                                   },
+                                  style: TextStyle(color: color3),
                                   decoration: InputDecoration(
                                     suffixIcon: state is TiktokText
                                         ? state.hasText
@@ -66,7 +74,10 @@ class _TiktokScreenState extends State<TiktokScreen> {
                                                         isText: false),
                                                   );
                                                 },
-                                                icon: const Icon(Icons.clear),
+                                                icon: Icon(
+                                                  Icons.clear,
+                                                  color: color3,
+                                                ),
                                               )
                                             : null
                                         : null,

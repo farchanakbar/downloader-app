@@ -27,14 +27,18 @@ class TiktokBloc extends Bloc<TiktokEvent, TiktokState> {
         try {
           final response =
               await dioMp4.get('/api/downloader/ttdl?url=${link[0]}');
-          emit(
-            TiktokLoaded(
-              Tiktok.fromJson(
-                response.data['data'],
+          if (response.statusCode == 500) {
+            emit(const TiktokError('Server Gangguan'));
+          } else {
+            emit(
+              TiktokLoaded(
+                Tiktok.fromJson(
+                  response.data['data'],
+                ),
               ),
-            ),
-          );
-          emit(TiktokCompleted());
+            );
+            emit(TiktokCompleted());
+          }
         } catch (e) {
           emit(
             const TiktokError(
@@ -51,7 +55,6 @@ class TiktokBloc extends Bloc<TiktokEvent, TiktokState> {
         final dir = await getApplicationDocumentsDirectory();
         String fileName = 'FarchanTiktok-${event.fileName}.mp4';
         String path = '${dir.path}/$fileName';
-        print(path);
         try {
           await dioMp4.download(
             event.url,

@@ -22,6 +22,7 @@ class GdriveBloc extends Bloc<GdriveEvent, GdriveState> {
           final response =
               await dio.get('/api/downloader/gdrive?url=${event.url}');
           if (response.data['error'] == true) {
+            // ignore: prefer_const_constructors
             emit(GdriveError('Link Bermasalah, Pastikan tidak private'));
           } else {
             emit(
@@ -44,8 +45,6 @@ class GdriveBloc extends Bloc<GdriveEvent, GdriveState> {
       String titleFile = 'FarchanGdrive-${event.fileName}';
       String path = '${dir.path}$titleFile';
       List tipeFile = event.tipeFile.split('/');
-      print(tipeFile[1]);
-      print(path);
       emit(GdriveLoading());
       if (tipeFile[1] == 'mp4' ||
           tipeFile[1] == 'jpeg' ||

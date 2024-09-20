@@ -1,4 +1,5 @@
 import 'package:app_downloader/bloc/facebook/facebook_bloc.dart';
+import 'package:app_downloader/data/constans/color.dart';
 import 'package:app_downloader/screen/facebook/facebook_detail_screen.dart';
 import 'package:app_downloader/widgets/button_back.dart';
 import 'package:app_downloader/widgets/logo_app.dart';
@@ -25,6 +26,7 @@ class _FacebookScreenState extends State<FacebookScreen> {
   Widget build(BuildContext context) {
     FacebookBloc facebookB = context.read<FacebookBloc>();
     return Scaffold(
+      backgroundColor: color1,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -45,7 +47,12 @@ class _FacebookScreenState extends State<FacebookScreen> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Hanya bisa download video!'),
+                                Text(
+                                  'Hanya bisa download video!',
+                                  style: TextStyle(
+                                    color: color3,
+                                  ),
+                                ),
                                 TextField(
                                   controller: linkFacebook,
                                   onChanged: (value) {
@@ -55,10 +62,14 @@ class _FacebookScreenState extends State<FacebookScreen> {
                                       ),
                                     );
                                   },
+                                  style: TextStyle(
+                                    color: color3,
+                                  ),
                                   decoration: InputDecoration(
                                     suffixIcon: state is FacebookText
                                         ? state.hasText
                                             ? IconButton(
+                                                color: color3,
                                                 onPressed: () {
                                                   linkFacebook.clear();
                                                   facebookB.add(

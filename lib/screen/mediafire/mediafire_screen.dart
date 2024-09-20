@@ -1,4 +1,5 @@
 import 'package:app_downloader/bloc/mediafire/mediafire_bloc.dart';
+import 'package:app_downloader/data/constans/color.dart';
 import 'package:app_downloader/screen/mediafire/mediafire_detail_screen.dart';
 import 'package:app_downloader/widgets/button_back.dart';
 import 'package:app_downloader/widgets/logo_app.dart';
@@ -25,6 +26,7 @@ class _MediafireScreenState extends State<MediafireScreen> {
   Widget build(BuildContext context) {
     MediafireBloc mediafireB = context.read<MediafireBloc>();
     return Scaffold(
+      backgroundColor: color1,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -45,7 +47,12 @@ class _MediafireScreenState extends State<MediafireScreen> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Tidak bisa download format Jpg dan Png!'),
+                                Text(
+                                  'Tidak bisa download format Jpg dan Png!',
+                                  style: TextStyle(
+                                    color: color3,
+                                  ),
+                                ),
                                 TextField(
                                   controller: linkMediafire,
                                   onChanged: (value) {
@@ -54,10 +61,14 @@ class _MediafireScreenState extends State<MediafireScreen> {
                                           isText: value.isNotEmpty),
                                     );
                                   },
+                                  style: TextStyle(
+                                    color: color3,
+                                  ),
                                   decoration: InputDecoration(
                                     suffixIcon: state is MediafireText
                                         ? state.hasText
                                             ? IconButton(
+                                                color: color3,
                                                 onPressed: () {
                                                   linkMediafire.clear();
                                                   mediafireB.add(

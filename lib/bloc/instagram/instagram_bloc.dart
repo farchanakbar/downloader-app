@@ -21,12 +21,16 @@ class InstagramBloc extends Bloc<InstagramEvent, InstagramState> {
         try {
           final response =
               await dioMp4.get('/api/downloader/igdl?url=${event.url}');
-          var data = response.data['data'][0];
-          var hasil = Instagram.fromJson(data);
-          emit(
-            InstagramLoaded(hasil),
-          );
-          emit(InstagramCompleted());
+          if (response.statusCode == 500) {
+            emit(const InstagramError('Server Gangguan'));
+          } else {
+            var data = response.data['data'][0];
+            var hasil = Instagram.fromJson(data);
+            emit(
+              InstagramLoaded(hasil),
+            );
+            emit(InstagramCompleted());
+          }
         } catch (e) {
           emit(
             const InstagramError(
@@ -42,7 +46,6 @@ class InstagramBloc extends Bloc<InstagramEvent, InstagramState> {
       final dir = await getApplicationDocumentsDirectory();
       String fileName = 'FarchanInstagram-${event.fileName}.mp4';
       String path = '${dir.path}/$fileName';
-      print(path);
       try {
         await dioMp4.download(
           event.url,

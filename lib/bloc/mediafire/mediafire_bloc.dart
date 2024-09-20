@@ -21,10 +21,14 @@ class MediafireBloc extends Bloc<MediafireEvent, MediafireState> {
         try {
           final response =
               await dio.get('/api/downloader/mediafire?url=${event.url}');
-          emit(
-            MediafireLoaded(Mediafire.fromJson(response.data)),
-          );
-          emit(MediafireCompleted());
+          if (response.statusCode == 500) {
+            emit(const MediafireError('Server Gangguan'));
+          } else {
+            emit(
+              MediafireLoaded(Mediafire.fromJson(response.data)),
+            );
+            emit(MediafireCompleted());
+          }
         } catch (e) {
           emit(
             const MediafireError(

@@ -1,3 +1,4 @@
+import 'package:app_downloader/data/constans/color.dart';
 import 'package:app_downloader/data/models/tiktok.dart';
 import 'package:app_downloader/helper/format_file_size.dart';
 import 'package:app_downloader/widgets/button_back.dart';
@@ -22,18 +23,25 @@ class TiktokDetailScreen extends StatelessWidget {
     FormatFileSize formatFile = FormatFileSize();
 
     return Scaffold(
+      backgroundColor: color1,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            ButtonBack(),
+            const ButtonBack(),
             const SizedBox(
               height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        width: 1,
+                        color: color3,
+                      )),
                   height: 400,
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(10),
@@ -53,6 +61,9 @@ class TiktokDetailScreen extends StatelessWidget {
               textAlign: TextAlign.center,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: color3,
+              ),
             ),
             const SizedBox(
               height: 10,
@@ -60,7 +71,8 @@ class TiktokDetailScreen extends StatelessWidget {
             Text(
               tiktok.author!.nickname.toString(),
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
+                color: color3,
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -70,7 +82,7 @@ class TiktokDetailScreen extends StatelessWidget {
             Container(
               width: double.infinity,
               height: 1,
-              color: Colors.black,
+              color: color3,
             ),
             const SizedBox(
               height: 5,
@@ -78,29 +90,44 @@ class TiktokDetailScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Text('${tiktok.duration} Detik'),
-                Container(
-                  height: 10,
-                  width: 1,
-                  color: Colors.black,
+                Text(
+                  '${tiktok.duration} Detik',
+                  style: TextStyle(
+                    color: color3,
+                  ),
                 ),
-                Text(formatFile.formatFileSize(tiktok.size!)),
                 Container(
                   height: 10,
                   width: 1,
-                  color: Colors.black,
+                  color: color3,
+                ),
+                Text(
+                  formatFile.formatFileSize(tiktok.size!),
+                  style: TextStyle(
+                    color: color3,
+                  ),
+                ),
+                Container(
+                  height: 10,
+                  width: 1,
+                  color: color3,
                 ),
                 tiktok.hdSize == 0
                     ? const Text('-')
-                    : Text('HD ${formatFile.formatFileSize(tiktok.hdSize!)}'),
+                    : Text(
+                        'HD ${formatFile.formatFileSize(tiktok.hdSize!)}',
+                        style: TextStyle(
+                          color: color3,
+                        ),
+                      ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
               formatFile.note,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
 
             //Download video tiktok biasa
@@ -241,8 +268,9 @@ class TiktokDetailScreen extends StatelessWidget {
             ),
             Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.music_note_sharp,
+                  color: color3,
                   size: 20,
                 ),
                 SizedBox(
@@ -251,6 +279,9 @@ class TiktokDetailScreen extends StatelessWidget {
                     tiktok.musicInfo!.title.toString().toUpperCase(),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: color3,
+                    ),
                   ),
                 ),
               ],
@@ -292,14 +323,27 @@ class TiktokDetailScreen extends StatelessWidget {
                   return Text(
                     formatFile.formatFileSize(state.progress),
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: color3,
+                    ),
                   );
                 } else if (state is TiktokCompleted) {
-                  return const Center(
-                    child: Text('Download Mp3 Selesai'),
+                  return Center(
+                    child: Text(
+                      'Download Mp3 Selesai',
+                      style: TextStyle(
+                        color: color3,
+                      ),
+                    ),
                   );
                 } else if (state is TiktokError) {
-                  return const Center(
-                    child: Text('Download Dibatalkan'),
+                  return Center(
+                    child: Text(
+                      'Download Dibatalkan',
+                      style: TextStyle(
+                        color: color3,
+                      ),
+                    ),
                   );
                 }
                 return const SizedBox();
@@ -316,7 +360,12 @@ class TiktokDetailScreen extends StatelessWidget {
                     onPressed: () {
                       tiktokBlocMp3.add(TiktokCancelDownloadMp3());
                     },
-                    child: const Text('Batal Download'),
+                    child: Text(
+                      'Batal Download',
+                      style: TextStyle(
+                        color: color3,
+                      ),
+                    ),
                   );
                 }
                 return const SizedBox();

@@ -1,4 +1,5 @@
 import 'package:app_downloader/bloc/instagram/instagram_bloc.dart';
+import 'package:app_downloader/data/constans/color.dart';
 import 'package:app_downloader/screen/instagram/instagram_detail_screen.dart';
 import 'package:app_downloader/widgets/button_back.dart';
 import 'package:app_downloader/widgets/logo_app.dart';
@@ -25,6 +26,7 @@ class _InstagramScreenState extends State<InstagramScreen> {
   Widget build(BuildContext context) {
     InstagramBloc instagramB = context.read<InstagramBloc>();
     return Scaffold(
+      backgroundColor: color1,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -45,7 +47,12 @@ class _InstagramScreenState extends State<InstagramScreen> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('Hanya bisa download video!'),
+                                Text(
+                                  'Hanya bisa download video!',
+                                  style: TextStyle(
+                                    color: color3,
+                                  ),
+                                ),
                                 TextField(
                                   controller: linkInstagram,
                                   onChanged: (value) {
@@ -54,10 +61,14 @@ class _InstagramScreenState extends State<InstagramScreen> {
                                           isText: value.isNotEmpty),
                                     );
                                   },
+                                  style: TextStyle(
+                                    color: color3,
+                                  ),
                                   decoration: InputDecoration(
                                     suffixIcon: state is InstagramText
                                         ? state.hasText
                                             ? IconButton(
+                                                color: color3,
                                                 onPressed: () {
                                                   linkInstagram.clear();
                                                   instagramB.add(

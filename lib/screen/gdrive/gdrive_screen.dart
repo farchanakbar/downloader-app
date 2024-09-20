@@ -1,4 +1,5 @@
 import 'package:app_downloader/bloc/gdrive/gdrive_bloc.dart';
+import 'package:app_downloader/data/constans/color.dart';
 import 'package:app_downloader/screen/gdrive/gdrive_detail_screen.dart';
 import 'package:app_downloader/widgets/button_back.dart';
 import 'package:app_downloader/widgets/logo_app.dart';
@@ -25,6 +26,7 @@ class _GdriveScreenState extends State<GdriveScreen> {
   Widget build(BuildContext context) {
     GdriveBloc gdriveB = context.read<GdriveBloc>();
     return Scaffold(
+      backgroundColor: color1,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -53,10 +55,14 @@ class _GdriveScreenState extends State<GdriveScreen> {
                                           isText: value.isNotEmpty),
                                     );
                                   },
+                                  style: TextStyle(
+                                    color: color3,
+                                  ),
                                   decoration: InputDecoration(
                                     suffixIcon: state is GdriveText
                                         ? state.hasText
                                             ? IconButton(
+                                                color: color3,
                                                 onPressed: () {
                                                   linkGdrive.clear();
                                                   gdriveB.add(

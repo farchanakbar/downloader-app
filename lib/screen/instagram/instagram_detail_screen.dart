@@ -1,4 +1,5 @@
 import 'package:app_downloader/bloc/instagram/instagram_bloc.dart';
+import 'package:app_downloader/data/constans/color.dart';
 import 'package:app_downloader/data/models/instagram.dart';
 import 'package:app_downloader/helper/format_file_size.dart';
 import 'package:app_downloader/widgets/button_back.dart';
@@ -19,18 +20,25 @@ class InstagramDetailScreen extends StatelessWidget {
     FormatFileSize formatFile = FormatFileSize();
 
     return Scaffold(
+      backgroundColor: color1,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            ButtonBack(),
+            const ButtonBack(),
             const SizedBox(
               height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                        color: color3,
+                      ),
+                      borderRadius: BorderRadius.circular(10)),
                   height: 400,
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: ClipRRect(
@@ -47,19 +55,22 @@ class InstagramDetailScreen extends StatelessWidget {
               height: 10,
             ),
             instagram.title == null
-                ? SizedBox()
+                ? const SizedBox()
                 : Text(
+                    style: TextStyle(
+                      color: color3,
+                    ),
                     instagram.title.toString(),
                     textAlign: TextAlign.center,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
               formatFile.note,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
 
             //Download video instagram
@@ -103,14 +114,27 @@ class InstagramDetailScreen extends StatelessWidget {
                   return Text(
                     '${formatFile.formatFileSize(state.progress)}/${formatFile.formatFileSize(state.total)}',
                     textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: color3,
+                    ),
                   );
                 } else if (state is InstagramCompleted) {
-                  return const Center(
-                    child: Text('Download Selesai'),
+                  return Center(
+                    child: Text(
+                      'Download Selesai',
+                      style: TextStyle(
+                        color: color3,
+                      ),
+                    ),
                   );
                 } else if (state is InstagramError) {
-                  return const Center(
-                    child: Text('Download Dibatalkan'),
+                  return Center(
+                    child: Text(
+                      'Download Dibatalkan',
+                      style: TextStyle(
+                        color: color3,
+                      ),
+                    ),
                   );
                 }
                 return const SizedBox();
@@ -127,7 +151,9 @@ class InstagramDetailScreen extends StatelessWidget {
                     onPressed: () {
                       instagramBlocMp4.add(InstagramCancelDownloadMp4());
                     },
-                    child: const Text('Batal Download'),
+                    child: const Text(
+                      'Batal Download',
+                    ),
                   );
                 }
                 return const SizedBox();

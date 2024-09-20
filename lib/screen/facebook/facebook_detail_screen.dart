@@ -1,4 +1,5 @@
 import 'package:app_downloader/bloc/facebook/facebook_bloc.dart';
+import 'package:app_downloader/data/constans/color.dart';
 import 'package:app_downloader/data/models/facebook.dart';
 import 'package:app_downloader/helper/format_file_size.dart';
 import 'package:app_downloader/widgets/button_back.dart';
@@ -19,18 +20,26 @@ class FacebookDetailScreen extends StatelessWidget {
     FormatFileSize formatFile = FormatFileSize();
 
     return Scaffold(
+      backgroundColor: color1,
       body: SafeArea(
         child: ListView(
           padding: const EdgeInsets.all(20),
           children: [
-            ButtonBack(),
+            const ButtonBack(),
             const SizedBox(
               height: 10,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1,
+                      color: color3,
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
                   height: 400,
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: ClipRRect(
@@ -43,12 +52,12 @@ class FacebookDetailScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
               formatFile.note,
-              style: TextStyle(color: Colors.red),
+              style: const TextStyle(color: Colors.red),
             ),
 
             //Download video Facebook
@@ -89,16 +98,29 @@ class FacebookDetailScreen extends StatelessWidget {
               builder: (context, state) {
                 if (state is FacebookDownloadInProgress) {
                   return Text(
+                    style: TextStyle(
+                      color: color3,
+                    ),
                     '${formatFile.formatFileSize(state.progress)}/${formatFile.formatFileSize(state.total)}',
                     textAlign: TextAlign.center,
                   );
                 } else if (state is FacebookCompleted) {
-                  return const Center(
-                    child: Text('Download Selesai'),
+                  return Center(
+                    child: Text(
+                      'Download Selesai',
+                      style: TextStyle(
+                        color: color3,
+                      ),
+                    ),
                   );
                 } else if (state is FacebookError) {
-                  return const Center(
-                    child: Text('Download Dibatalkan'),
+                  return Center(
+                    child: Text(
+                      'Download Dibatalkan',
+                      style: TextStyle(
+                        color: color3,
+                      ),
+                    ),
                   );
                 }
                 return const SizedBox();
