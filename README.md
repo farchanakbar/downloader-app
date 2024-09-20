@@ -1,6 +1,4 @@
-# app_downloader
-
-A new Flutter project.
+# Aplikasi Download Gratis no Watermark
 
 ## Getting Started
 
@@ -8,7 +6,7 @@ Follow these steps to get the project up and running:
 
 1. Clone the repository
 ```bash
-git clone https://github.com/farchanakbar/downloader-app.git\n
+git clone https://github.com/farchanakbar/downloader-app.git
 cd downloader-app
 ```
 2. Install dependencies
